@@ -15,11 +15,14 @@ class TimetableController extends Controller
     public function index(Request $request)
     {
         $days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        $dayOrder = array_flip($days);
 
+        // Fetch and sort in PHP to support SQLite (FIELD() is MySQL-only)
         $entries = Timetable::where('student_id', $request->user()->id)
-            ->orderByRaw("FIELD(day, 'Monday','Tuesday','Wednesday','Thursday','Friday','Saturday')")
             ->orderBy('start_time')
-            ->get();
+            ->get()
+            ->sortBy(fn($e) => [$dayOrder[$e->day] ?? 99, $e->start_time])
+            ->values();
 
         // Group by day for easier frontend rendering
         $grouped = [];

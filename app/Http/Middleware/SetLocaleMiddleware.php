@@ -30,9 +30,13 @@ class SetLocaleMiddleware
             
             $supportedLocales = ['en', 'ta', 'si'];
 
+            \Illuminate\Support\Facades\Log::info("Locale debug - raw: {$locale}, clean: {$cleanLocale}, matched: " . (in_array($cleanLocale, $supportedLocales) ? 'yes' : 'no'));
+
             if (in_array($cleanLocale, $supportedLocales)) {
                 app()->setLocale($cleanLocale);
             }
+        } else {
+            \Illuminate\Support\Facades\Log::info("Locale debug - no locale found in request");
         }
 
         return $next($request);

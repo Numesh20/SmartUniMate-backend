@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="csrf-token" content="meL9rWKU3JWbzFrrnYO4r2eo7hOEOvz9kRRyLaeN">
     <title>Smart UniMate - Sabaragamuwa University</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
@@ -633,7 +633,7 @@
                 <div class="lang-option" onclick="setLang('ta')">🇮🇳 தமிழ்</div>
             </div>
         </div>
-        <button class="auth-btn" id="authBtn" onclick="toggleAuth()"><i class="fa-brands fa-microsoft"></i><span> {{ __('messages.sign_in') }}</span></button>
+        <button class="auth-btn" id="authBtn" onclick="toggleAuth()"><i class="fa-brands fa-microsoft"></i><span> පුරන්න</span></button>
     </div>
 </header>
 
@@ -641,18 +641,18 @@
 <!-- SIDEBAR -->
 <aside>
     <div class="nav-section-label">Main</div>
-    <div class="nav-item active" onclick="nav('home')" id="nav-home"><i class="fa-solid fa-house"></i> {{ __('messages.nav.home') }}</div>
-    <div class="nav-item" onclick="nav('news')" id="nav-news"><i class="fa-solid fa-newspaper"></i> {{ __('messages.nav.news') }}</div>
-    <div class="nav-item" onclick="nav('kb')" id="nav-kb"><i class="fa-solid fa-book-open"></i> {{ __('messages.nav.kb') }}</div>
-    <div class="nav-item" onclick="nav('chatbot')" id="nav-chatbot"><i class="fa-solid fa-robot"></i> {{ __('messages.nav.chatbot') }}</div>
-    <div class="nav-item" onclick="nav('academic')" id="nav-academic"><i class="fa-solid fa-book"></i> {{ __('messages.nav.academic') }}</div>
-    <div class="nav-item" onclick="nav('timetable')" id="nav-timetable"><i class="fa-solid fa-calendar-days"></i> {{ __('messages.nav.timetable') }}</div>
-    <div class="nav-item" onclick="nav('gpa')" id="nav-gpa"><i class="fa-solid fa-chart-line"></i> {{ __('messages.nav.gpa') }}</div>
-    <div class="nav-item" onclick="nav('community')" id="nav-community"><i class="fa-solid fa-users"></i> {{ __('messages.nav.community') }}</div>
+    <div class="nav-item active" onclick="nav('home')" id="nav-home"><i class="fa-solid fa-house"></i> මුල් පිටුව</div>
+    <div class="nav-item" onclick="nav('news')" id="nav-news"><i class="fa-solid fa-newspaper"></i> කැම්පස් පුවත්</div>
+    <div class="nav-item" onclick="nav('kb')" id="nav-kb"><i class="fa-solid fa-book-open"></i> දැනුම් ගබඩාව</div>
+    <div class="nav-item" onclick="nav('chatbot')" id="nav-chatbot"><i class="fa-solid fa-robot"></i> AI සංවාදක</div>
+    <div class="nav-item" onclick="nav('academic')" id="nav-academic"><i class="fa-solid fa-book"></i> අධ්‍යයන මොඩියුල</div>
+    <div class="nav-item" onclick="nav('timetable')" id="nav-timetable"><i class="fa-solid fa-calendar-days"></i> කාල සටහන</div>
+    <div class="nav-item" onclick="nav('gpa')" id="nav-gpa"><i class="fa-solid fa-chart-line"></i> GPA ගණනය</div>
+    <div class="nav-item" onclick="nav('community')" id="nav-community"><i class="fa-solid fa-users"></i> ප්‍රජාව</div>
     <div style="margin-top:16px;">
     <div class="nav-section-label">Account</div>
-    <div class="nav-item" onclick="nav('profile')" id="nav-profile"><i class="fa-solid fa-user"></i> {{ __('messages.nav.profile') }}</div>
-    <div class="nav-item" onclick="nav('admin')" id="nav-admin" style="color:#c0392b;display:none;"><i class="fa-solid fa-shield-halved"></i> {{ __('messages.nav.admin') }}</div>
+    <div class="nav-item" onclick="nav('profile')" id="nav-profile"><i class="fa-solid fa-user"></i> පැතිකඩ</div>
+    <div class="nav-item" onclick="nav('admin')" id="nav-admin" style="color:#c0392b;display:none;"><i class="fa-solid fa-shield-halved"></i> පරිපාලක</div>
     </div>
 </aside>
 
@@ -1801,11 +1801,8 @@ function setLang(lang) {
         el.classList.toggle('active', el.getAttribute('onclick').includes(`'${lang}'`));
     });
     document.getElementById('langMenu').classList.remove('open');
-    
-    // Reload page with query param so backend strictly serves translated content
-    const url = new URL(window.location.href);
-    url.searchParams.set('locale', lang);
-    window.location.href = url.toString();
+    // Reload page so backend serves translated content
+    window.location.reload();
 }
 
 function toggleLangMenu() {
@@ -2353,7 +2350,7 @@ function updateAuthBtn() {
     if(!btn) return;
     btn.innerHTML = isLoggedIn
         ? '<i class="fa-solid fa-right-from-bracket"></i> Sign Out'
-        : '<i class="fa-brands fa-microsoft"></i> <span>{{ __("messages.sign_in") }}</span>';
+        : '<i class="fa-brands fa-microsoft"></i> <span>පුරන්න</span>';
 }
 
 function toggleAuth() {
