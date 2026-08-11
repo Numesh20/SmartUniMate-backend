@@ -266,12 +266,30 @@ function addComment(postId) {
 }
 function sharePost(postId) {
     const p = posts.find(x => x.id == postId);
-    if(!p) return;
+    if (!p) return;
     const shareText = `Check out this post on SmartUniMate:\n"${p.text}"\n— ${p.author}`;
-    // Use fallback for non-HTTPS environments
+    // Attempt to use the Web Share API if supported
+    if (navigator.share) {
+        navigator.share({
+            title: 'SmartUniMate Post',
+            text: shareText,
+            url: window.location.href
+        }).then(() => {
+            addNotif('📤 Post shared via native share!');
+        }).catch((err) => {
+            // If sharing fails, fall back to clipboard copy
+            fallbackCopy(shareText);
+        });
+    } else {
+        // Fallback for browsers without Web Share API
+        fallbackCopy(shareText);
+    }
+}
+
+function fallbackCopy(text) {
     try {
         const ta = document.createElement('textarea');
-        ta.value = shareText;
+        ta.value = text;
         ta.style.position = 'fixed';
         ta.style.left = '-9999px';
         document.body.appendChild(ta);
@@ -279,7 +297,7 @@ function sharePost(postId) {
         document.execCommand('copy');
         document.body.removeChild(ta);
         addNotif('📋 Post copied to clipboard!');
-    } catch(e) {
+    } catch (e) {
         addNotif('⚠️ Could not copy. Please try again.');
     }
 }
@@ -1524,6 +1542,7 @@ async function fetchPosts() {
             });
             renderPosts(currentFilter);
             renderAdminModQueue();
+// renderHomeTrendingPosts(); // removed per request
             
             // If on profile page, re-render recent posts dynamically
             const userStr = localStorage.getItem('susl_user');
@@ -1543,6 +1562,29 @@ async function fetchPosts() {
     } catch(e) {
         console.error("Failed to fetch posts", e);
     }
+}
+
+function renderHomeTrendingPosts() {
+    const container = document.getElementById('homeTrendingPosts');
+    if (!container) return;
+    
+    if (posts.length === 0) {
+        container.innerHTML = '<div style="font-size:12px; color:var(--text-muted); text-align:center; padding: 20px 0;">No discussions yet.</div>';
+        return;
+    }
+    
+    // Take the 3 most recent posts
+    const trending = posts.slice(0, 3);
+    
+    container.innerHTML = trending.map(p => `
+        <div style="padding: 12px 0; border-bottom: 1px solid var(--border); display:flex; gap:12px;">
+            <div class="avatar-sm">${p.initials}</div>
+            <div>
+                <div style="font-size:13px; font-weight:600;">${p.author}</div>
+                <div style="font-size:12px; color:var(--text-muted); margin-top:2px;">${p.text.length > 50 ? p.text.substring(0, 50) + '...' : p.text}</div>
+            </div>
+        </div>
+    `).join('');
 }
 function renderPosts(filter) {
     const container = document.getElementById('feedContainer');

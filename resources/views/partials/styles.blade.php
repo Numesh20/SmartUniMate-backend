@@ -160,7 +160,7 @@
         .nav-item i { width: 16px; text-align: center; font-size: 14px; }
 
         /* ── MAIN ── */
-        main { flex: 1; padding: 32px; max-width: 1120px; width: 100%; }
+        main { flex: 1; padding: 32px; max-width: 1600px; width: 100%; margin: 0 auto; }
         .section { display: none; animation: up 0.25s ease; }
         .section.active { display: block; }
         @keyframes up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }

@@ -1,32 +1,44 @@
 <!-- HOME -->
 <div class="section active" id="home">
     <!-- STUDENT HOME VIEW -->
-    <div id="student-home-view">
-        <div class="hero">
-            <h1>Your Digital Campus</h1>
-            <p>AI-powered assistant for Sabaragamuwa University students. Get instant answers, manage your schedule, and connect with peers.</p>
-            <div class="quick-search">
-                <input type="text" placeholder="Search modules, faculty, events..." id="heroSearch" onkeydown="if(event.key==='Enter'){nav('academic');document.getElementById('academicSearch').value=this.value;doSearch();}">
-                <button class="btn btn-primary" onclick="nav('academic');document.getElementById('academicSearch').value=document.getElementById('heroSearch').value;doSearch();">Search</button>
+    <div id="student-home-view" style="display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap;">
+        
+        <!-- LEFT SIDE (Main Focus) -->
+        <div style="flex: 1; min-width: 300px;">
+            <div class="hero">
+                <h1>Your Digital Campus</h1>
+                <p>AI-powered assistant for Sabaragamuwa University students. Get instant answers, manage your schedule, and connect with peers.</p>
+                <div class="quick-search">
+                    <input type="text" placeholder="Search modules, faculty, events..." id="heroSearch" onkeydown="if(event.key==='Enter'){nav('academic');document.getElementById('academicSearch').value=this.value;doSearch();}">
+                    <button class="btn btn-primary" onclick="nav('academic');document.getElementById('academicSearch').value=document.getElementById('heroSearch').value;doSearch();">Search</button>
+                </div>
+            </div>
+            
+            <div class="grid-3">
+                <div class="stat-card">
+                    <div class="stat-num" id="homeEnrolledModules">0</div>
+                    <div class="stat-label">Enrolled Modules</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num" id="homeGPA">0.00</div>
+                    <div class="stat-label">Current GPA</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num" id="homeClassesThisWeek">0</div>
+                    <div class="stat-label">Classes This Week</div>
+                </div>
+            </div>
+            
+            <div style="margin-top:20px;" id="homeAlertsContainer">
+                <!-- Dynamic alert card will be populated here -->
             </div>
         </div>
-        <div class="grid-3">
-            <div class="stat-card">
-                <div class="stat-num" id="homeEnrolledModules">0</div>
-                <div class="stat-label">Enrolled Modules</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-num" id="homeGPA">0.00</div>
-                <div class="stat-label">Current GPA</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-num" id="homeClassesThisWeek">0</div>
-                <div class="stat-label">Classes This Week</div>
-            </div>
+        
+        <!-- RIGHT SIDE (Filling the empty space) -->
+        <div style="width: 320px; flex-shrink: 0; display:flex; flex-direction:column; gap:20px;">
+            <!-- Quick Links and Recent Discussions have been removed as per request -->
         </div>
-        <div style="margin-top:20px;" id="homeAlertsContainer">
-            <!-- Dynamic alert card will be populated here -->
-        </div>
+        
     </div>
 
     <!-- ADMIN HOME VIEW -->
