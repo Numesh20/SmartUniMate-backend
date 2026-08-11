@@ -34,14 +34,12 @@ class AuthController extends Controller
             'faculty'    => $validated['faculty'] ?? null,
             'year'       => $validated['year'] ?? null,
             'phone'      => $validated['phone'] ?? null,
+            'is_approved'=> false,
         ]);
 
-        $token = $student->createToken('smartunimate', ['role:student'])->plainTextToken;
-
         return response()->json([
-            'message' => 'Registration successful',
+            'message' => 'Registration successful. Your account is pending admin approval.',
             'student' => $student,
-            'token'   => $token,
         ], 201);
     }
 
@@ -69,6 +67,12 @@ class AuthController extends Controller
         if ($student->is_banned) {
             throw ValidationException::withMessages([
                 'email' => ['Your account has been banned by the Administrator.'],
+            ]);
+        }
+
+        if (! $student->is_approved) {
+            throw ValidationException::withMessages([
+                'email' => ['Your account is pending admin approval.'],
             ]);
         }
 

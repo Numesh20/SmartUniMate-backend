@@ -22,6 +22,7 @@ class Student extends Authenticatable
         'is_banned',
         'warnings_count',
         'warning_message',
+        'is_approved',
     ];
 
     protected $hidden = [

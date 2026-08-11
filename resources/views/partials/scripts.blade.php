@@ -810,16 +810,21 @@ async function submitRegister() {
             body: JSON.stringify(payload)
         });
         
-        if(data && data.token) {
-            localStorage.setItem('susl_token', data.token);
-            localStorage.setItem('susl_role', 'student');
-            localStorage.setItem('susl_user', JSON.stringify(data.student));
+        if(data && data.message) {
             // Reset T&C checkbox for next use
             const tc = document.getElementById('regTermsCheck');
             if (tc) tc.checked = false;
-            initAuth();
+            
+            // clear form
+            document.getElementById('regName').value = '';
+            document.getElementById('regEmail').value = '';
+            document.getElementById('regStudentId').value = '';
+            document.getElementById('regFaculty').value = '';
+            document.getElementById('regPassword').value = '';
+            document.getElementById('regPasswordConfirm').value = '';
+
             closeAuthModal();
-            addNotif('Registration successful! Welcome to UniMate.');
+            addNotif(data.message || 'Registration successful! Please wait for admin approval.');
         }
     } catch(e) {
         let msg = e.message;
@@ -1811,6 +1816,64 @@ function switchAdminTab(tabName) {
     }
     if (tabName === 'reports') {
         loadAdminComplaints();
+    }
+    if (tabName === 'approvals') {
+        loadPendingApprovals();
+    }
+}
+
+// ── ADMIN STUDENT APPROVALS ──
+async function loadPendingApprovals() {
+    const tbody = document.getElementById('adminApprovalsTableBody');
+    if (!tbody) return;
+    
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:20px;">Loading pending approvals...</td></tr>';
+    try {
+        const data = await apiFetch('/api/v1/admin/students/pending');
+        if (data && data.students && data.students.length > 0) {
+            tbody.innerHTML = data.students.map(s => `
+                <tr style="border-bottom:1px solid var(--border);">
+                    <td style="padding:10px;">${escHtml(s.name)}</td>
+                    <td style="padding:10px;">${escHtml(s.student_id)}</td>
+                    <td style="padding:10px;">${escHtml(s.email)}</td>
+                    <td style="padding:10px;">${escHtml(s.faculty || '-')}</td>
+                    <td style="padding:10px;">${s.year || '-'}</td>
+                    <td style="padding:10px;color:var(--text-muted);font-size:11px;">${new Date(s.created_at).toLocaleDateString()}</td>
+                    <td style="padding:10px;text-align:center;">
+                        <div style="display:flex;gap:6px;justify-content:center;">
+                            <button class="btn btn-primary" style="padding:4px 8px;font-size:11px;" onclick="approveStudent(${s.id})"><i class="fa-solid fa-check"></i></button>
+                            <button class="btn btn-outline" style="padding:4px 8px;font-size:11px;color:var(--danger);border-color:var(--danger);" onclick="rejectStudent(${s.id})"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        } else {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:20px;">No pending registrations found.</td></tr>';
+        }
+    } catch(e) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--danger);padding:20px;">Error loading pending approvals.</td></tr>';
+    }
+}
+
+async function approveStudent(id) {
+    if (!confirm('Are you sure you want to approve this student?')) return;
+    try {
+        await apiFetch(`/api/v1/admin/students/${id}/approve`, { method: 'POST' });
+        addNotif('Student approved successfully.');
+        loadPendingApprovals();
+    } catch(e) {
+        addNotif('⚠️ Failed to approve student.');
+    }
+}
+
+async function rejectStudent(id) {
+    if (!confirm('Are you sure you want to reject this student? Their registration record will be deleted.')) return;
+    try {
+        await apiFetch(`/api/v1/admin/students/${id}/reject`, { method: 'POST' });
+        addNotif('Student registration rejected and removed.');
+        loadPendingApprovals();
+    } catch(e) {
+        addNotif('⚠️ Failed to reject student.');
     }
 }
 

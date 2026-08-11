@@ -8,6 +8,7 @@
     </div>
     <div style="display:flex;gap:12px;margin-bottom:24px;overflow-x:auto;padding-bottom:4px;" id="adminSubNav">
         <button class="btn btn-primary" onclick="switchAdminTab('dashboard')" style="border-radius:20px;padding:6px 16px;font-size:13px;background:var(--danger);border-color:var(--danger);" data-tab="dashboard"><i class="fa-solid fa-chart-line"></i> Dashboard</button>
+        <button class="btn btn-outline" onclick="switchAdminTab('approvals')" style="border-radius:20px;padding:6px 16px;font-size:13px;" data-tab="approvals"><i class="fa-solid fa-user-check"></i> Approvals</button>
         <button class="btn btn-outline" onclick="switchAdminTab('modules')" style="border-radius:20px;padding:6px 16px;font-size:13px;" data-tab="modules"><i class="fa-solid fa-book-open"></i> Syllabus Catalog</button>
         <button class="btn btn-outline" onclick="switchAdminTab('reports')" style="border-radius:20px;padding:6px 16px;font-size:13px;" data-tab="reports"><i class="fa-solid fa-triangle-exclamation"></i> Complaints</button>
         <button class="btn btn-outline" onclick="switchAdminTab('profile')" style="border-radius:20px;padding:6px 16px;font-size:13px;" data-tab="profile"><i class="fa-solid fa-user-shield"></i> Admin Profile</button>
@@ -179,6 +180,34 @@
                     <div class="palette-swatch" style="background:linear-gradient(135deg,#e76f51,#f4a261);" onclick="setPalette('palette-sunset')" title="Sunset Orange"></div>
                     <div class="palette-swatch" style="background:linear-gradient(135deg,#7b2cbf,#9d4edd);" onclick="setPalette('palette-purple')" title="Royal Purple"></div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPROVALS VIEW -->
+    <div id="adminView-approvals" class="admin-view" style="display:none;">
+        <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                <h3 class="section-title" style="margin:0;">Pending Registrations</h3>
+                <button class="btn btn-outline" style="font-size:12px;padding:4px 12px;margin:0;" onclick="loadPendingApprovals()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+            </div>
+            <div style="overflow-x:auto;">
+                <table style="width:100%; border-collapse:collapse; font-size:12px; text-align:left;">
+                    <thead>
+                        <tr style="border-bottom:2px solid var(--border); padding:8px;">
+                            <th style="padding:10px;">Name</th>
+                            <th style="padding:10px;">Index/ID</th>
+                            <th style="padding:10px;">Email</th>
+                            <th style="padding:10px;">Faculty</th>
+                            <th style="padding:10px;">Year</th>
+                            <th style="padding:10px;">Registered</th>
+                            <th style="padding:10px; text-align:center;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminApprovalsTableBody">
+                        <tr><td colspan="7" style="text-align:center;color:var(--text-muted);padding:20px;">Loading pending approvals...</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

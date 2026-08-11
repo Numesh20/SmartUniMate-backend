@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AdminAuthController;
 use App\Http\Controllers\Api\ChatController;
+use App\Http\Controllers\Api\AdminStudentApprovalController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Api\NewsController;
@@ -85,6 +86,11 @@ Route::prefix('v1')->group(function () {
         // Admin Reports/Complaints Management
         Route::get('admin/reports', [ReportController::class, 'index']);
         Route::post('admin/reports/{id}/action', [ReportController::class, 'takeAction']);
+
+        // Admin Student Approvals
+        Route::get('admin/students/pending', [AdminStudentApprovalController::class, 'pending']);
+        Route::post('admin/students/{id}/approve', [AdminStudentApprovalController::class, 'approve']);
+        Route::post('admin/students/{id}/reject', [AdminStudentApprovalController::class, 'reject']);
     });
 
     // ── Shared routes (accessible to both student and admin roles) ────────────────
