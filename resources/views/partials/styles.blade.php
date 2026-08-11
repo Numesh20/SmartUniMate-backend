@@ -589,4 +589,30 @@
             70% { box-shadow: 0 0 0 8px rgba(46, 204, 113, 0); }
             100% { box-shadow: 0 0 0 0 rgba(46, 204, 113, 0); }
         }
+        /* Terms & Privacy link button in header */
+        .terms-link-btn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .terms-link-btn:hover {
+            color: var(--primary);
+            border-color: var(--primary);
+            background: rgba(128,0,0,0.05);
+        }
+        .terms-link-btn i { font-size: 11px; }
+        @media (max-width: 600px) {
+            .terms-link-text { display: none; }
+            .terms-link-btn { padding: 5px 8px; border-radius: 50%; }
+        }
     </style>

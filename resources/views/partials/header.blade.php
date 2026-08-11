@@ -20,6 +20,7 @@
                 <div class="lang-option" onclick="setLang('ta')">🇮🇳 தமிழ்</div>
             </div>
         </div>
+        <button class="terms-link-btn" onclick="openTermsModal('privacy')" title="Privacy Policy & Terms"><i class="fa-solid fa-shield-halved"></i><span class="terms-link-text">Terms</span></button>
         <button class="auth-btn" id="authBtn" onclick="toggleAuth()"><i class="fa-brands fa-microsoft"></i><span> {{ __('messages.sign_in') }}</span></button>
     </div>
 </header>

@@ -797,6 +797,13 @@ async function submitRegister() {
         return;
     }
     
+    const termsCheck = document.getElementById('regTermsCheck');
+    if (!termsCheck || !termsCheck.checked) {
+        errEl.textContent = "You must read and accept the Terms & Conditions and Privacy Policy to register.";
+        errEl.style.display = 'block';
+        return;
+    }
+    
     try {
         const data = await apiFetch('/api/v1/register', {
             method: 'POST',
@@ -807,6 +814,9 @@ async function submitRegister() {
             localStorage.setItem('susl_token', data.token);
             localStorage.setItem('susl_role', 'student');
             localStorage.setItem('susl_user', JSON.stringify(data.student));
+            // Reset T&C checkbox for next use
+            const tc = document.getElementById('regTermsCheck');
+            if (tc) tc.checked = false;
             initAuth();
             closeAuthModal();
             addNotif('Registration successful! Welcome to UniMate.');
@@ -817,6 +827,38 @@ async function submitRegister() {
         errEl.textContent = msg;
         errEl.style.display = 'block';
     }
+}
+
+// ── TERMS & PRIVACY POLICY MODAL ──
+function openTermsModal(tab) {
+    tab = tab || 'privacy';
+    document.getElementById('termsModalOverlay').style.display = 'flex';
+    switchTermsTab(tab);
+    document.getElementById('termsScrollBody').scrollTop = 0;
+}
+function closeTermsModal(event) {
+    // Only close if clicking the backdrop itself
+    if (event && event.target !== document.getElementById('termsModalOverlay')) return;
+    document.getElementById('termsModalOverlay').style.display = 'none';
+}
+function closeTermsModalBtn() {
+    document.getElementById('termsModalOverlay').style.display = 'none';
+}
+function switchTermsTab(tab) {
+    const panels = { privacy: 'termsPanelPrivacy', terms: 'termsPanelTerms' };
+    const tabs   = { privacy: 'termsTabPrivacy',   terms: 'termsTabTerms' };
+    Object.keys(panels).forEach(key => {
+        document.getElementById(panels[key]).style.display = key === tab ? 'block' : 'none';
+        const btn = document.getElementById(tabs[key]);
+        if (key === tab) {
+            btn.style.borderBottomColor = 'var(--primary)';
+            btn.style.color = 'var(--primary)';
+        } else {
+            btn.style.borderBottomColor = 'transparent';
+            btn.style.color = 'var(--text-muted)';
+        }
+    });
+    document.getElementById('termsScrollBody').scrollTop = 0;
 }
 
 async function submitForgotPassword() {
