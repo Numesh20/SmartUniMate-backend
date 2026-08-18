@@ -34,5 +34,14 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'bot' => [
+        'url'    => env('BOT_SERVICE_URL', 'http://localhost:8001'),
+        'secret' => env('BOT_SECRET', 'change-me-in-production'),
+    ],
+ 
+
+    'anthropic' => [
+        'key' => env('ANTHROPIC_API_KEY'),
+    ],
 
 ];
